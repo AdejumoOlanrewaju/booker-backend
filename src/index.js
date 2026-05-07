@@ -15,6 +15,12 @@ app.use("/api/v1/auth", authRoutes)
 app.use("/api/v1/services", serviceRoutes)
 app.use('/api/v1/availability', availabiityRoutes)
 app.use("/api/v1/bookings", bookingRoutes)
+app.use(cors({
+    origin: [
+        "http://localhost:5173",
+        "https://booker-sigma.vercel.app"
+    ]
+}))
 
 const port = 5500
 
