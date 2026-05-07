@@ -25,8 +25,8 @@ export const register = async (req, res) => {
                 { day: 'wednesday', isOpen: true, openTime: '09:00', closeTime: '17:00' },
                 { day: 'thursday', isOpen: true, openTime: '09:00', closeTime: '17:00' },
                 { day: 'friday', isOpen: true, openTime: '09:00', closeTime: '17:00' },
-                { day: 'saturday', isOpen: false, openTime: '09:00', closeTime: '13:00' },
-                { day: 'sunday', isOpen: false, openTime: '09:00', closeTime: '13:00' },
+                { day: 'saturday', isOpen: true, openTime: '09:00', closeTime: '17:00' },
+                { day: 'sunday', isOpen: true, openTime: '09:00', closeTime: '17:00' },
             ],
             bufferTime: 10
         })

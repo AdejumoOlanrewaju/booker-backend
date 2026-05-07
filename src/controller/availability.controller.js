@@ -4,8 +4,6 @@ import Service from "../models/Service.js";
 import Booking from "../models/Booking.js"
 
 export const getBlockedDates = async (req, res) => {
-    console.log("Business ID in getBlockedDates: ", req.params.businessID)
-    console.log("Availability Model: ", Availability)
     try {
         const blocked = await Availability.find({
             business: req.params.businessID,
@@ -34,9 +32,7 @@ export const getWorkingHours = async (req, res) => {
 
 export const getAvailableSlots = async (req, res) => {
     try {
-        console.log("Query Params: ", req.query)
         const { businessID, date, serviceID } = await req.params
-        console.log("Business id :", businessID)
         const business = await User.findById(businessID)
             .select('workingHours bufferTime')
 
@@ -49,8 +45,6 @@ export const getAvailableSlots = async (req, res) => {
         if (!service) {
             return res.status(404).json({ message: 'Service not found' })
         }
-        console.log("Business: ", business)
-        console.log("Service: ", service)
 
         const bookingDate = new Date(date)
         const dayName = bookingDate.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase()
