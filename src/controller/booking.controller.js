@@ -224,9 +224,10 @@ export const getAnalytics = async (req, res) => {
     const confirmed = allBookings.filter(b => b.status === 'confirmed').length
     const cancelled = allBookings.filter(b => b.status === 'cancelled').length
     const pending = allBookings.filter(b => b.status === 'pending').length
+    const completed = allBookings.filter(b => b.status === 'completed').length
 
     const revenue = allBookings
-      .filter(b => b.status !== 'cancelled')
+      .filter(b => b.status === 'confirmed' || b.status === 'completed')
       .reduce((sum, b) => sum + (b.service?.price || 0), 0)
 
     const serviceCounts = {}
@@ -243,6 +244,7 @@ export const getAnalytics = async (req, res) => {
       confirmed,
       cancelled,
       pending,
+      completed,
       revenue,
       mostBooked,
       cancellationRate: total > 0 ? ((cancelled / total) * 100).toFixed(1) : 0
