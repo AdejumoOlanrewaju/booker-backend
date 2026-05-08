@@ -2,17 +2,13 @@ import nodemailer from 'nodemailer'
 import dotenv from "dotenv"
 dotenv.config()
 const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
+  host: 'smtp-relay.brevo.com',
   port: 587,
   secure: false,
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_APP_PASSWORD
-  },
-  tls: {
-    rejectUnauthorized: false
-  },
-  family: 4 // Force IPv4 — this is the key fix
+    user: process.env.BREVO_EMAIL,    // your Brevo account email
+    pass: process.env.BREVO_SMTP_KEY  // SMTP key from Brevo dashboard
+  }
 })
 
 export const sendBookingConfirmation = async ({
