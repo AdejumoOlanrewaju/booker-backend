@@ -1,15 +1,18 @@
 import nodemailer from 'nodemailer'
+import { Resend } from "resend"
 import dotenv from "dotenv"
 dotenv.config()
-const transporter = nodemailer.createTransport({
-  host: 'smtp-relay.brevo.com',
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.BREVO_EMAIL,    // your Brevo account email
-    pass: process.env.BREVO_SMTP_KEY  // SMTP key from Brevo dashboard
-  }
-})
+
+const resend = new Resend(process.env.RESEND_API_KEY)
+
+const sendEmail = async ({ to, subject, html }) => {
+  await resend.emails.send({
+    from: 'Booker <onboarding@resend.dev>',
+    to,
+    subject,
+    html,
+  })
+}
 
 export const sendBookingConfirmation = async ({
   customerName,
@@ -133,8 +136,7 @@ export const sendBookingConfirmation = async ({
     </html>
   `
 
-  await transporter.sendMail({
-    from: process.env.EMAIL_FROM,
+  await sendEmail({
     to: customerEmail,
     subject: `Booking confirmed — ${serviceName} at ${businessName}`,
     html,
@@ -230,8 +232,7 @@ export const sendBookingNotificationToAdmin = async ({
     </html>
   `
 
-  await transporter.sendMail({
-    from: process.env.EMAIL_FROM,
+  await sendEmail({
     to: adminEmail,
     subject: `New booking — ${customerName} booked ${serviceName}`,
     html,
@@ -309,8 +310,7 @@ export const sendCancellationEmail = async ({
     </html>
   `
 
-  await transporter.sendMail({
-    from: process.env.EMAIL_FROM,
+  await sendEmail({
     to: customerEmail,
     subject: `Booking cancelled — ${reference}`,
     html,
