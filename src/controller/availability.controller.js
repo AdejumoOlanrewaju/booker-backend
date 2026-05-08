@@ -67,8 +67,6 @@ export const getAvailableSlots = async (req, res) => {
             return res.json({ slots: [], message: 'Business unavailable on this date' })
         }
 
-        console.log("Day Schedule :", daySchedule)
-
         const existingBookings = await Booking.find({
             business: businessID,
             date: {
@@ -77,8 +75,6 @@ export const getAvailableSlots = async (req, res) => {
             },
             status: { $nin: ['cancelled'] }
         })
-
-        console.log("Existing Bookings: ", existingBookings)
 
         const slots = generateSlots(
             daySchedule.openTime,
@@ -114,8 +110,6 @@ export const blockDate = async (req, res) => {
             date: new Date(date),
             reason
         })
-
-        console.log("User ID in blockedDate: ", req.user._id)
 
         res.status(201).json(blocked)
     } catch (error) {

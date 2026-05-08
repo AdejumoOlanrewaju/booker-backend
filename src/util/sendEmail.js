@@ -2,11 +2,17 @@ import nodemailer from 'nodemailer'
 import dotenv from "dotenv"
 dotenv.config()
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  }
+    pass: process.env.EMAIL_APP_PASSWORD
+  },
+  tls: {
+    rejectUnauthorized: false
+  },
+  family: 4 // Force IPv4 — this is the key fix
 })
 
 export const sendBookingConfirmation = async ({
@@ -83,11 +89,11 @@ export const sendBookingConfirmation = async ({
               border-radius:16px;overflow:hidden;margin-bottom:24px;">
 
               ${[
-                ['Service', serviceName],
-                ['Date', formattedDate],
-                ['Time', startTime],
-                ['Business', businessName],
-              ].map(([label, value], i, arr) => `
+      ['Service', serviceName],
+      ['Date', formattedDate],
+      ['Time', startTime],
+      ['Business', businessName],
+    ].map(([label, value], i, arr) => `
                 <div style="display:flex;justify-content:space-between;
                   align-items:center;padding:14px 18px;
                   ${i < arr.length - 1 ? 'border-bottom:1px solid rgba(255,255,255,0.04);' : ''}">
@@ -137,6 +143,7 @@ export const sendBookingConfirmation = async ({
     subject: `Booking confirmed — ${serviceName} at ${businessName}`,
     html,
   })
+
 }
 
 export const sendBookingNotificationToAdmin = async ({
@@ -165,9 +172,14 @@ export const sendBookingNotificationToAdmin = async ({
       <div style="max-width:560px;margin:0 auto;padding:40px 20px;">
 
         <div style="text-align:center;margin-bottom:32px;">
-          <span style="font-size:16px;font-weight:700;color:#ffffff;">
-            ⚡ Booker
-          </span>
+          <div style="display:inline-flex;align-items:center;gap:8px;
+            background:#0f172a;border:1px solid rgba(255,255,255,0.08);
+            border-radius:12px;padding:10px 18px;">
+            <span style="font-size:16px;font-weight:700;color:#ffffff;
+              letter-spacing:-0.3px;">
+              ⚡ Booker
+            </span>
+          </div>
         </div>
 
         <div style="background:#0f172a;border:1px solid rgba(255,255,255,0.06);
@@ -193,14 +205,14 @@ export const sendBookingNotificationToAdmin = async ({
               border:1px solid rgba(255,255,255,0.05);
               border-radius:16px;overflow:hidden;margin-bottom:16px;">
               ${[
-                ['Customer', customerName],
-                ['Email', customerEmail],
-                ['Phone', customerPhone],
-                ['Service', serviceName],
-                ['Date', formattedDate],
-                ['Time', startTime],
-                ['Reference', reference],
-              ].map(([label, value], i, arr) => `
+      ['Customer', customerName],
+      ['Email', customerEmail],
+      ['Phone', customerPhone],
+      ['Service', serviceName],
+      ['Date', formattedDate],
+      ['Time', startTime],
+      ['Reference', reference],
+    ].map(([label, value], i, arr) => `
                 <div style="display:flex;justify-content:space-between;
                   align-items:center;padding:13px 18px;
                   ${i < arr.length - 1 ? 'border-bottom:1px solid rgba(255,255,255,0.04);' : ''}">
@@ -281,11 +293,11 @@ export const sendCancellationEmail = async ({
               border:1px solid rgba(255,255,255,0.05);
               border-radius:16px;overflow:hidden;">
               ${[
-                ['Service', serviceName],
-                ['Date', formattedDate],
-                ['Time', startTime],
-                ['Reference', reference],
-              ].map(([label, value], i, arr) => `
+      ['Service', serviceName],
+      ['Date', formattedDate],
+      ['Time', startTime],
+      ['Reference', reference],
+    ].map(([label, value], i, arr) => `
                 <div style="display:flex;justify-content:space-between;
                   padding:13px 18px;
                   ${i < arr.length - 1 ? 'border-bottom:1px solid rgba(255,255,255,0.04);' : ''}">

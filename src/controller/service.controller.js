@@ -6,7 +6,6 @@ export const getServices = async (req, res) => {
             business: req.user._id,
             isActive: true
         })
-        console.log("Services: ", services)
         res.status(200).json(services)
     } catch (err) {
         res.status(500).json({ message: err.message })
@@ -20,8 +19,7 @@ export const getPublicServices = async (req, res) => {
             business: req.params.businessID,
             isActive: true
         })
-        console.log("Business ID: ", req.params.businessID)
-        console.log("Public Services: ", services)
+        
         res.status(200).json(services)
     } catch (error) {
         res.status(500).json({ message: error.message })
