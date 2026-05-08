@@ -13,8 +13,7 @@ const bookingSchema = new mongoose.Schema({
   reference: String,      // unique booking ref e.g. BK-2024-0001
   notes: String,
   reminderSent: Boolean,
-  createdAt: Date
-})
+}, { timestamps : true})
 
 const Booking = mongoose.model("Booking", bookingSchema)
 export default Booking

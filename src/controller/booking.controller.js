@@ -111,7 +111,7 @@ export const getBookings = async (req, res) => {
     const bookings = await Booking.find(filter)
       .populate('service', 'name duration price')
       .sort({ createdAt: -1 })
-
+    
     res.json(bookings)
   } catch (error) {
     res.status(500).json({ message: error.message })
